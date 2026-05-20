@@ -1,60 +1,69 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
-void main() {
-WidgetsFlutterBinding
-.ensureInitialized();
-runApp(const MyApp());
-}
-class MyApp extends StatelessWidget {
-const MyApp({super.key});
-@override
-Widget build(BuildContext context) {
-return MaterialApp(
-title: 'Lloyd Boom',
-debugShowCheckedModeBanner: false,
-theme: ThemeData(
-useMaterial3: true,
-colorScheme: 
-ColorScheme.fromSeed(
-seedColor: Colors.teal
-),
-),
-home: const HomeScreen(),
-);
-}
-}
-class AppManager extends ChangeNotifier {
-static final AppManager _instance = 
-AppManager._internal();
-factory AppManager() => _instance;
-AppManager._internal();
-String userName = "미등록";
-bool isRegistered = false;
-double targetLat = 0.0;
-double targetLng = 0.0;
-double targetRadius = 50.0;
-List<DateTime> attendanceDates = [];
-void registerUser(
-String name, 
-double lat, 
-double lng) {
-userName = name;
-targetLat = lat;
-targetLng = lng;
-isRegistered = true;
-notifyListeners();
-}
-void checkIn(DateTime date) {
-final today = DateTime(
-date.year, 
-date.month, 
-date.day
-);
-if (!attendanceDates
-.contains(today)) {
-attendanceDates.add(today);
-notifyListeners();
-}
-}
+import 'package:table_calendar/table_calendar.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
+
+void main() => runApp(const MaterialApp(home: LloydboomHome()));
+
+class LloydboomHome extends StatefulWidget {
+  const LloydboomHome({super.key});
+  @override
+  State<LloydboomHome> createState() => _LloydboomHomeState();
 }
 
+class _LloydboomHomeState extends State<LloydboomHome> {
+  DateTime _focusedDay = DateTime.now();
+  String _timeString = "";
+  String _lastStatus = "기록 없음";
+
+  @override
+  void initState() {
+    super.initState();
+    _timeString = DateTime.now().toString().substring(11, 19);
+    Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
+  }
+
+  void _updateTime() {
+    setState(() { _timeString = DateTime.now().toString().substring(11, 19); });
+  }
+
+  Future<void> _sendSms(String status) async {
+    final Uri smsUri = Uri(
+      scheme: 'sms',
+      path: '010-1234-5678', // 관리자 번호
+      queryParameters: {'body': '[로이드밤] $status 완료: $_timeString'},
+    );
+    if (await canLaunchUrl(smsUri)) await launchUrl(smsUri);
+    setState(() { _lastStatus = "$status 완료 ($_timeString)"; });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("로이드밤 출퇴근 관리")),
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
+          Text(_timeString, style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+          Text("상태: $_lastStatus"),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(onPressed: () => _sendSms("출근"), child: const Text("출근하기")),
+              const SizedBox(width: 20),
+              ElevatedButton(onPressed: () => _sendSms("퇴근"), child: const Text("퇴근하기")),
+            ],
+          ),
+          Expanded(
+            child: TableCalendar(
+              firstDay: DateTime.utc(2025, 1, 1),
+              lastDay: DateTime.utc(2030, 12, 31),
+              focusedDay: _focusedDay,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
