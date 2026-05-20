@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace "com.sodoma.lloydboom"
-    compileSdkVersion 35
+    // 요구사항에 맞춰 36으로 상향
+    compileSdkVersion 36 
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -21,9 +22,13 @@ android {
     defaultConfig {
         applicationId "com.sodoma.lloydboom"
         minSdkVersion 23
-        targetSdkVersion 35
+        // 요구사항에 맞춰 36으로 상향
+        targetSdkVersion 36 
         versionCode 1
         versionName "1.0"
+        
+        // 라이브러리 의존성 충돌 방지 설정
+        multiDexEnabled true
     }
 
     lintOptions {
