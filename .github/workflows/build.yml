@@ -1,6 +1,5 @@
 name: Android Manual Build
 
-# 기존의 on: push 설정을 모두 지우고, 수동 실행(workflow_dispatch)만 남깁니다.
 on:
   workflow_dispatch:
 
@@ -26,6 +25,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 최신 Gradle 버전들과 완벽하게 호환되도록 빌드 명령어 고정
+      # 최신 안드로이드 빌드 툴러인 체인 검사를 우회하는 플래그를 추가했습니다.
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --android-skip-build-dependency-validation
