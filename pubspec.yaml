@@ -13,7 +13,7 @@ dependencies:
 
   cupertino_icons: ^1.0.6
   
-  # 최신 안드로이드 빌드 환경(Gradle 8.9)과 충돌나지 않는 최신 안정 버전들입니다.
+  # 최신 Gradle 및 Android 15 환경을 완벽히 지원하는 안정 버전들입니다.
   geolocator: ^13.0.1
   geocoding: ^3.0.0
   permission_handler: ^11.3.1
