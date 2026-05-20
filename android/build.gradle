@@ -5,11 +5,9 @@ google()
 mavenCentral()
 }
 dependencies {
-classpath 
-'com.android.tools.build:gradle:8.1.0'
-classpath 
-"org.jetbrains.kotlin:kotlin-gradle-plugin:" +
-"$kotlin_version"
+// classpath 문법 오타 수정 (한 줄로 완벽 결합)
+classpath 'com.android.tools.build:gradle:8.1.0'
+classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 }
 }
 allprojects {
@@ -29,4 +27,3 @@ project.evaluationDependsOn(':app')
 tasks.register("clean", Delete) {
 delete rootProject.buildDir
 }
-
