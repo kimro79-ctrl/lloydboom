@@ -42,7 +42,8 @@ android {
 
     defaultConfig {
         applicationId "com.sodoma.lloydboom"
-        minSdkVersion 21
+        // geolocator 플러그인 요구사항에 맞춰 21에서 23으로 상향 조정했습니다.
+        minSdkVersion 23
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
