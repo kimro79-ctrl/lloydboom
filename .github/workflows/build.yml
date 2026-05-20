@@ -25,6 +25,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 최신 안드로이드 빌드 툴러인 체인 검사를 우회하는 플래그를 추가했습니다.
       - name: Build APK
-        run: flutter build apk --release --android-skip-build-dependency-validation
+        run: flutter build apk --release
+
+      # 빌드된 APK를 깃허브 액션 페이지에서 다운로드할 수 있게 업로드합니다.
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
