@@ -1,1 +1,31 @@
+name: Android Manual Build
 
+# 기존의 on: push 설정을 모두 지우고, 수동 실행(workflow_dispatch)만 남깁니다.
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 최신 Gradle 버전들과 완벽하게 호환되도록 빌드 명령어 고정
+      - name: Build APK
+        run: flutter build apk --release
