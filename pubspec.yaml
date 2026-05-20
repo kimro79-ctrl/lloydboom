@@ -1,18 +1,27 @@
 name: lloydboom
-description: "Attendance Check"
+description: "A new Flutter project."
 publish_to: 'none'
+
 version: 1.0.0+1
+
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
+
 dependencies:
   flutter:
     sdk: flutter
+
   cupertino_icons: ^1.0.6
-  geolocator: ^13.0.0
+  
+  # 최신 안드로이드 빌드 환경(Gradle 8.9)과 충돌나지 않는 최신 안정 버전들입니다.
+  geolocator: ^13.0.1
+  geocoding: ^3.0.0
+  permission_handler: ^11.3.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
+
 flutter:
   uses-material-design: true
-
